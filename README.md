@@ -9,7 +9,8 @@ idea插件，查看基金，股票：支持A股，港股，美股
 提issues附上:使用的插件版本、IDEA详细的版本信息(到Help->about里面复制出来)，如果【Event Log】有异常信息，也请在issues附上异常  
 
 ## 安装   
-leeks-1.x.x.zip 直接在IDEA里面安装，注意：直接选择zip文件安装，不要解压。  
+[插件下载地址](https://github.com/huage2580/leeks/releases)  
+找到 leeks-x.x.x.zip 下载后，直接在IDEA里面安装（安装方式自行百度），注意：直接选择zip文件安装，不要解压。  
 
 ## 使用  
 设置里面找到Leeks选项，输入基金编码，股票编码，逗号分隔，apply。    
@@ -30,10 +31,13 @@ double shift，连按两下shift，输入leeks，找到toolWindow，打开以后
 基金只有估值分时图，股票提供分时图，日周月K线图，非图表，不能进行操作，不会自动刷新。  
 在表格中双击行即可打开分时图，右键弹出菜单选择K线图。  
 
+### 代理  
+插件不会使用系统或者IDEA的代理，请前往插件设置页设置代理。格式为`127.0.0.1:1080` 这样子。K线图那些不会走代理  
+
 
 ## 预览
-![da](https://github.com/huage2580/leeks/blob/master/img1.png)
-![dd](https://github.com/huage2580/leeks/blob/master/img2.png)  
+![da](./img1.png)
+![dd](./img2.png)  
 
 ## 常见问题
 * 异常日志中出现【java.lang.NoClassDefFoundError: com/github/promeg/pinyinhelper/Pinyin】  
@@ -73,6 +77,8 @@ bug fix from [DAIE](https://github.com/DA1Y1)
 保存表头顺序 from [DAIE](https://github.com/DA1Y1)  
 - V1.9.1  
 图表界面优化 from [dengerYang](https://github.com/dengerYang)  
+- V1.9.3  
+加入代理设置
 
 
 

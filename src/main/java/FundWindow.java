@@ -18,6 +18,7 @@ import com.intellij.ui.table.JBTable;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import utils.HttpClientPool;
 import utils.LogUtil;
 import handler.TianTianFundHandler;
 import utils.PopupsUiUtil;
@@ -27,8 +28,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;
 import java.util.*;
 import java.util.List;
@@ -43,6 +42,8 @@ public class FundWindow implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        //先加载代理
+        loadProxySetting();
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(mPanel, "Fund", false);
@@ -67,6 +68,11 @@ public class FundWindow implements ToolWindowFactory {
 //                }
 //            }
 //        });
+    }
+
+    private void loadProxySetting() {
+        String proxyStr = PropertiesComponent.getInstance().getValue("key_proxy");
+        HttpClientPool.getHttpClient().buildHttpClient(proxyStr);
     }
 
     @Override
@@ -104,7 +110,7 @@ public class FundWindow implements ToolWindowFactory {
                 if (table.getSelectedRow() < 0)
                     return;
                 String code = String.valueOf(table.getModel().getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), fundRefreshHandler.codeColumnIndex));//FIX 移动列导致的BUG
-                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() > 1) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() > 1) {
                     // 鼠标左键双击
                     try {
                         PopupsUiUtil.showImageByFundCode(code, PopupsUiUtil.FundShowType.gsz, new Point(e.getXOnScreen(), e.getYOnScreen()));
@@ -112,7 +118,7 @@ public class FundWindow implements ToolWindowFactory {
                         ex.printStackTrace();
                         LogUtil.info(ex.getMessage());
                     }
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                } else if (SwingUtilities.isRightMouseButton(e)) {
                     //鼠标右键
                     JBPopupFactory.getInstance().createListPopup(new BaseListPopupStep<PopupsUiUtil.FundShowType>("",
                             PopupsUiUtil.FundShowType.values()) {
